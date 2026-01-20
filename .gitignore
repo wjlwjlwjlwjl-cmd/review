@@ -1,2 +1,4 @@
 # 忽略随笔代码所在目录
 /Nothing
+# ignore the binary executable file
+a.out
