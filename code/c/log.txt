@@ -1,1 +1,2 @@
-hello world
+the content of the file is: 
+ hello world
