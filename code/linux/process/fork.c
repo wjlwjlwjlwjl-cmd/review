@@ -11,11 +11,11 @@ int main()
     }
     if(ret == 0)
     {
-        printf("i'm a child %d", getpid());
+        printf("i'm a child %d\n", getpid());
     }
     else
     {
-        printf("i'm the father %d", getpid());
+        printf("i'm the father %d\n", getpid());
     }
     return 0;
 }
