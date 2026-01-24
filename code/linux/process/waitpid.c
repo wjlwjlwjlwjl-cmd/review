@@ -19,6 +19,12 @@ int main()
     }
     else
     {
+        //exit normally
+        //the eight number in the formmer are empty, and the eight number in the latter contain
+        //the exit status
+        //exit abnormally
+        //the seven number in the formmer are the exit signal, the eighth are the symbol of 
+        //core dump, and the rest of the part is empty
         int status;
         int ret = waitpid(-1, &status, 0); //blocked wait
         printf("wait end\n");
