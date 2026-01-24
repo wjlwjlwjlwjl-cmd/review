@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef int SLDataType;
 #define INITSIZE 4
+#define DEBUG
 
 typedef struct SeqList
 {
@@ -15,18 +19,22 @@ typedef struct SeqList
 void SLInit(SL* sl)
 {
     sl->data = (SLDataType*)malloc(INITSIZE * sizeof(SLDataType));
-    sl->size = INITSIZE;
-    sl->capacity = 0;
-    if(!sl)
+    if(sl->data == NULL)
     {
-        printf("malloc fail/n");
+        printf("%s\n", strerror(errno));
         return;
     }
+    sl->size = INITSIZE;
+    sl->capacity = 0;
 }
 
 void SLDestroy(SL* sl)
 {
     free(sl->data);
+    #ifdef DEBUG
+    printf("sequence_list destroyed\n");
+    #endif
+    sl->data = NULL;
 }
 
 void SLPrint(SL* sl)
@@ -41,8 +49,18 @@ void SLPrint(SL* sl)
 //enlarge the capacity
 void SLCheckCapacity(SL* sl)
 {
+    #ifdef DEBUG
+    printf("size before:%d\n", sl->size);
+    #endif
     sl->data = (SLDataType*)realloc(sl->data, sl->size * 2 * sizeof(SLDataType));
+    if(sl->data == NULL)
+    {
+        perror("realloc");
+    }
     sl->size = sl->size * 2;
+    #ifdef DEBUG
+    printf("size after: %d\n", sl->size);
+    #endif
 }
 
 //adjust elements
@@ -99,6 +117,11 @@ void pop_front(SL* sl)
 
 void SLInsert(SL* sl, int pos, SLDataType val)
 {
+    if(pos > sl->capacity)
+    {
+        printf("Invalid position to insert.");
+        return;
+    }
     if(++sl->capacity == sl->size)
     {
         SLCheckCapacity(sl);
@@ -113,6 +136,11 @@ void SLInsert(SL* sl, int pos, SLDataType val)
 
 void SLErase(SL *sl, int pos)
 {
+    if(pos < 0)
+    {
+        printf("invalid position to earse");
+        return;
+    }
     if(sl->capacity == 0)
     {
         return;
