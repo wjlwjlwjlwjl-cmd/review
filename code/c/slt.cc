@@ -20,6 +20,10 @@ SLTNode* SLTBuyNode(SLTDataType x)
 
 void SLTPrint(SLTNode* head)
 {
+    if(head == NULL)
+    {
+        return;
+    }
     SLTNode* cur = head;
     while(cur)
     {
@@ -48,12 +52,135 @@ void SLTPushBack(SLTNode** pphead, SLTDataType val)
     }
 }
 
-void SLTPushfFront(SLTNode** pphead, SLTDataType val)
+void SLTPushFront(SLTNode** pphead, SLTDataType val)
 {
-    SLTNode* node = 
+    assert(pphead != NULL);
+    SLTNode* node = SLTBuyNode(val);
     if(*pphead == NULL)
     {
-        
+        *pphead = node;
+    }
+    else
+    {
+        node->next = *pphead;
+        *pphead = node;
+    }
+}
+
+void SLTPopFront(SLTNode** pphead)
+{
+    assert(pphead != NULL);
+    if((*pphead)->next == NULL)
+    {
+        free(*pphead);
+    }
+    else
+    {
+        SLTNode* oldHead = (*pphead);
+        *pphead = (*pphead)->next;
+        free(oldHead);
+    }
+}
+
+void SLTPopBack(SLTNode** pphead)
+{
+    assert(pphead != NULL);
+    if((*pphead)->next == NULL)
+    {
+        free(*pphead);
+    }
+    else
+    {
+        SLTNode* ptail = *pphead;
+        SLTNode* newTail = NULL;
+        while(ptail->next)
+        {
+            newTail = ptail;
+            ptail = ptail->next;
+        }
+        free(ptail);
+        newTail->next = NULL;
+    }
+}
+
+SLTNode* SLTFind(SLTNode* phead, SLTDataType x)
+{
+    assert(phead != NULL);
+    SLTNode* cur = phead;
+    while(cur)
+    {
+        if(cur->data == x)
+        {
+            return cur;
+        }
+        cur = cur->next;
+    }
+    return NULL;
+}
+
+void SLTInsert(SLTNode** pphead, int pos, int x)
+{
+    assert(pphead != NULL);
+    SLTNode* newNode = SLTBuyNode(x);
+    if((*pphead) == NULL)
+    {
+        *pphead = newNode;
+    }
+    else
+    {
+        SLTNode* cur = *pphead;
+        SLTNode* prev = NULL;
+        while(pos-- > 0)
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+        prev->next = newNode;
+        newNode->next = cur;
+    }
+}
+
+void SLTErase(SLTNode** pphead, int pos)
+{
+    assert(pphead != NULL);
+    if((*pphead)->next == NULL)
+    {
+        free(*pphead);
+    }
+    else
+    {
+        SLTNode* prev = NULL;
+        SLTNode* cur = *pphead;
+        while(pos-- > 0)
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+        prev->next = cur->next;
+        free(cur);
+    }
+}
+
+void SLTInsertAfter(SLTNode** pphead, int pos, int val)
+{
+    SLTInsert(pphead, pos + 1, val);
+}
+
+void SLTEraseAfter(SLTNode** pphead, int pos)
+{
+    SLTErase(pphead, pos + 1);
+}
+
+void SLTDestroy(SLTNode** pphead)
+{
+    assert(pphead != NULL);
+    SLTNode* cur = *pphead;
+    while(cur)
+    {
+        SLTNode* prev = cur;
+        cur = cur->next;
+        printf("delete the node of %d\n", prev->data);
+        free(prev);
     }
 }
 
@@ -64,7 +191,22 @@ int main()
     SLTPushBack(&phead, 2);
     SLTPushBack(&phead, 3);
     SLTPushBack(&phead, 4);
+    SLTPushFront(&phead, 10);
+    SLTPopFront(&phead);
 
     SLTPrint(phead);
+    SLTPopBack(&phead);
+    // SLTPrint(phead);
+    // printf("find 1: %d\n", SLTFind(phead, 1)->data);
+    SLTInsert(&phead, 1, 100);
+    SLTPrint(phead);
+    SLTErase(&phead, 1);
+    SLTPrint(phead);
+    SLTInsertAfter(&phead, 1, 100);
+    SLTPrint(phead);
+    SLTEraseAfter(&phead, 1);
+    SLTPrint(phead);
+    SLTDestroy(&phead);
+    //SLTPrint(phead);
     return 0;
 }
