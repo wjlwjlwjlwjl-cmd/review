@@ -10,6 +10,7 @@ typedef struct SListNode
     struct SListNode* next;
 }SLTNode;
 
+//封装一个产生新节点的函数
 SLTNode* SLTBuyNode(SLTDataType x)
 {
     SLTNode* newNode = (SLTNode*)malloc(sizeof(SLTNode));
