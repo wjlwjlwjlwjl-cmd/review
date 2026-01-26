@@ -107,7 +107,78 @@ void pop_back(ListNode* phead)
     free(cur);
 }
 
-void push_front(ListNode* phead, SLDataType)
+void push_front(ListNode* phead, SLDataType val)
+{
+    ListNode* newNode = BuyNode(val);
+    if(phead->next == NULL)
+    {
+        phead->next = newNode;
+    }
+    else
+    {
+        newNode->next = phead->next;
+        phead->next->prev = newNode;
+        phead->next = newNode;
+        newNode->prev = phead;
+    }
+}
+
+void pop_front(ListNode* phead)
+{
+    if(phead->next == NULL)
+    {
+        return;
+    }
+    else
+    {
+        ListNode* del = phead->next;
+        phead->next = phead->next->next;
+        phead->next->prev = phead;
+        free(del);
+    }
+}
+
+void insert(ListNode* phead, int pos,SLDataType x)
+{
+    ListNode* newNode = BuyNode(x);
+    if(phead->next == NULL)
+    {
+        phead->next = newNode;
+    }
+    else
+    {
+        ListNode* prev = NULL;
+        ListNode* cur = phead->next;
+        while(pos--)
+        {
+            prev = cur;
+            cur = cur->next;
+        }
+        cur->prev = newNode;        
+        newNode->next = cur;
+        newNode->prev = prev;
+        prev->next = newNode;
+    }
+}
+
+void erase(ListNode* phead, int pos)
+{
+    if(phead->next == NULL)
+    {
+        return;
+    }
+    else
+    {
+        ListNode* cur = phead->next;
+        while(pos--)
+        {
+            cur = cur->next;
+        }
+        cur->next->prev = cur->prev;
+        cur->prev->next = cur->next;
+        free(cur);
+    }
+}
 
 int main()
 {
@@ -118,6 +189,14 @@ int main()
     push_back(phead, 4);
     Print(phead);
     pop_back(phead);
+    Print(phead);
+    push_front(phead, 1);
+    Print(phead);
+    pop_front(phead);
+    Print(phead);
+    insert(phead, 1, 100);
+    Print(phead);
+    erase(phead, 1);
     Print(phead);
     Destroy(phead);
     return 0;
