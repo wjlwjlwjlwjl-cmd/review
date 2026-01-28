@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #define HDataType int
-#define INITSIZE 4
 
 typedef struct heap
 {
@@ -12,6 +11,15 @@ typedef struct heap
     int capacity; //current size
 }heap;
 
+void heap_print(heap* hp)
+{
+    for(int i = 0; i < hp->capacity; i++)
+    {
+        printf("%d ", hp->data[i]);
+    }
+    printf("\n");
+}
+
 void AdjustUp(heap* hp, int child)
 {
     int parent = (child - 1) / 2;
@@ -19,7 +27,7 @@ void AdjustUp(heap* hp, int child)
     {
         if(hp->data[child] < hp->data[parent])
         {
-            std::swap(hp->data[child], hp->data[child]);
+            std::swap(hp->data[parent], hp->data[child]);
             child = parent;
             parent = (child - 1) / 2;;
         }
@@ -32,11 +40,13 @@ void AdjustUp(heap* hp, int child)
 
 void AdjustDown(heap*hp, int parent, int n)
 {
+    printf("adjustdown\n");
+    heap_print(hp);
+    printf("the capacity is %d\n", n);
     int child = parent * 2 + 1;//assume the left is the smaller
     while(child < n)
     {
-        printf("value of the child %d, the parent %d\n", child, parent);
-        if(hp->data[child] > hp->data[child + 1])
+        if(child + 1 < n && hp->data[child] > hp->data[child + 1])
         {
             child++;
         }
@@ -63,25 +73,51 @@ void heap_init(heap* hp, HDataType* data, int sz)
     //create the structure of the heap
     for(int i = (sz - 1 - 1) / 2; i >= 0; i--)
     {
-        printf("parent %d adjust down\n", i);
         AdjustDown(hp, i, sz);
     }
 }
 
-void heap_print(heap* hp)
-{
-    for(int i = 0; i < hp->capacity; i++)
-    {
-        printf("%d ", hp->data[i]);
-    }
-    printf("\n");
-}
 
 void heap_destroy(heap* hp)
 {
     free(hp->data);
     hp->capacity = 0;
     hp->size = 0;
+}
+
+void heap_push(heap* hp, HDataType x)
+{
+    if(hp->capacity == hp->size)
+    {
+        hp->data = (HDataType*)realloc(hp->data, hp->size * 2);
+    }
+    hp->data[hp->capacity] = x;
+    hp->capacity += 1;
+    AdjustUp(hp, hp->capacity - 1);
+}
+
+void heap_pop(heap* hp)
+{
+    std::swap(hp->data[0], hp->data[hp->capacity - 1]);
+    hp->capacity--;
+    heap_print(hp);
+
+    AdjustDown(hp, 0, hp->capacity);
+}
+
+HDataType heap_top(heap* hp)
+{
+    return hp->data[0];
+}
+
+int heap_size(heap* hp)
+{
+    return hp->capacity;
+}
+
+int empty(heap* hp)
+{
+    return hp->size;
 }
 
 int main()
@@ -97,6 +133,13 @@ int main()
     heap_data[6] = 8;
 
     heap_init(&heap, heap_data, 7);
+    heap_print(&heap);
+
+    heap_push(&heap, 5);
+    heap_push(&heap, 1);
+    heap_print(&heap);
+
+    heap_pop(&heap);
     heap_print(&heap);
 
     heap_destroy(&heap);
