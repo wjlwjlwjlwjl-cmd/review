@@ -1,5 +1,6 @@
 #include <iostream>
 
+//时间复杂度是n^1.3，是对插入排序的优化，当gap == 1时，就是插入排序
 void shell_sort(int* arr, int sz)
 {
     int gap = sz;
