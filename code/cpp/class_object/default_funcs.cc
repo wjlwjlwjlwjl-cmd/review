@@ -3,12 +3,15 @@
 class A
 {
 public:    
-    A() = default;
+    A()
+    {}
+
     A(A& a, int n = 10)
     {
         this->_a = n;
         std::cout << "拷贝构造" << std::endl;
     }
+
     ~A()
     {
         std::cout << _a << std::endl;
@@ -55,6 +58,7 @@ private:
     int _year;
     int _month;
     int _day;
+    A _a;
 };
 std::istream& operator>>(std::istream& in, Date& d)
 {
