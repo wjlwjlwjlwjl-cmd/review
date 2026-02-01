@@ -12,8 +12,8 @@ public:
 
     vector(vector<T>& v)
     {
-        reserve(v.size());
-        for(int i = 0; i < v.capacity(); i++)
+        reserve(v.capacity());
+        for(int i = 0; i < v.size(); i++)
         {
             push_back(v[i]);
         }
@@ -30,7 +30,6 @@ public:
 
     vector(size_t num, const T& val = T())
     {
-        reserve(num);
         while(num--)
         {
             push_back(val);
@@ -40,12 +39,11 @@ public:
     void insert(iterator pos, const T& val)
     {
         printf("%p %p\n", _start, pos);
-        // assert(pos >= _start);
-        // assert(pos <= _end);
+        assert(pos >= _start);
+        assert(pos <= _end);
         if(_end == _end_of_storage)
         {
-            std::cout << "扩容" << std::endl;
-            reserve(size() == 0 ? 4 : 2 * size());
+            reserve(capacity() == 0 ? 4 : 2 * capacity());
         }
 
         iterator cur = _end - 1;
@@ -58,11 +56,63 @@ public:
         *pos = val;
     }
 
+    void erase(iterator pos)
+    {
+        assert(pos >= _start);
+        assert(pos <= _end_of_storage);
+        iterator cur = pos;
+        while(cur != _end)
+        {
+            *cur = *(cur + 1);
+            cur++;
+        }
+        _end--;
+    }
+
+    vector& operator=(vector& v)
+    {
+        clear();
+        for(int i = 0; i < v.size(); i++)
+        {
+            push_back(v[i]);
+        }
+        return *this;
+    }
+
+    void swap(vector& v)
+    {
+        std::swap(v._start, _start);
+        std::swap(v._end_of_storage, _end_of_storage);
+        std::swap(v._end, _end);
+    }
+
+    void clear()
+    {
+        _end = _start;
+    }
+
+    void resize(int n, const T& val)
+    {
+        if(n < size())
+        {
+            _end = _start + n;
+        }
+        else
+        {
+            reserve(n);
+            while(_start + n != _end)
+            {
+                *_end = val;
+                _end++;
+            }
+        }
+    }
+
     void reserve(int n)
     {
-        if(n > size())
+        if(n > capacity())
         {
-            int old_capacity = size();
+            int old_size = size();
             T* tmp = new T[n];
             for(int i = 0; i < size(); i++)
             {
@@ -70,7 +120,7 @@ public:
             }
             delete[] _start;
             _start = tmp;
-            _end = _start + old_capacity;
+            _end = _start + old_size;
             _end_of_storage = _start + n;
         }
     }
@@ -84,7 +134,7 @@ public:
         }
         else
         {
-            reserve(size() == 0 ? 4 : 2 * size());
+            reserve(capacity() == 0 ? 4 : 2 * capacity());
             *_end = val;
             _end++;
         }
@@ -92,18 +142,37 @@ public:
 
     int capacity()
     {
-        return _end - _start;
+        return _end_of_storage - _start;
     }
 
     int size()
     {
-        return _end_of_storage - _start;
+        return _end - _start;
     }
 
     T& operator[](int pos)
     {
-        assert(pos < capacity());
+        assert(pos < size());
         return _start[pos];
+    }
+
+    const T& operator[](int pos) const
+    {
+        assert(pos < size());
+        return _start[pos];
+    }
+
+    void pop_back()
+    {
+        if(!empty())
+        {
+            _end--;
+        }
+    }
+
+    bool empty()
+    {
+        return _end == _start;
     }
 
     iterator begin()
@@ -128,11 +197,11 @@ public:
 
     ~vector()
     {
-        // if(_start != nullptr)
-        // {
-        //     delete[] _start;
-        //     _start = _end = _end_of_storage = nullptr;
-        // }
+        if(_start != nullptr)
+        {
+            delete[] _start;
+            _start = _end = _end_of_storage = nullptr;
+        }
     }
 private:
     iterator _start = nullptr;
@@ -172,12 +241,30 @@ int main()
 
     vector<int> v2(10, 1);
     Print<int>(v2);
-    std::cout << v2.size() << " " << v2.capacity() << std::endl;
     std::cout << "---" << std::endl;
 
-    v2.insert(v.begin() + 1, 9);
+    v2.insert(v2.begin() + 1, 9);
     Print<int>(v2);
-    std::cout << v2.size() << " " << v2.capacity() << std::endl;
+    v2.erase(v2.begin() + 1);
+    Print<int>(v2);
     std::cout << "---" << std::endl;
+
+    vector<int> v3;
+    v3 = v2;
+    Print<int>(v3);
+    std::cout << "---" << std::endl;
+
+    v3.swap(v);
+    Print<int>(v3);
+    std::cout << "---" << std::endl;
+
+    v3.resize(5, 0);
+    Print<int>(v3);
+    v3.resize(10, 9);
+    Print<int>(v3);
+    v3.pop_back();
+    Print<int>(v3);
+    // std::cout << v2.size() << " " << v2.capacity() << std::endl;
+    // std::cout << "---" << std::endl;
     return 0;
 }
