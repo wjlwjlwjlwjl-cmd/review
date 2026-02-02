@@ -196,7 +196,7 @@ int main()
 {
     int arr[] = {9, 5, 0, 6, 3, 1, 4, 2, 8, 7};
     int n = sizeof(arr) / sizeof(int);
-    quick_sort_non_recursive(arr, 0, n - 1);
+    quick_sort_refined(arr, 0, n - 1);
     for(int i = 0; i < n; i++)
     {
         printf("%d ", arr[i]);
