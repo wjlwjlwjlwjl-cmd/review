@@ -1,7 +1,8 @@
 #include <iostream>
 using namespace std;
 
-void func(int&& val)
+template<class T>
+void func(T&& val)
 {
     std::cout << val << std::endl;
 }
@@ -9,8 +10,10 @@ void func(int&& val)
 int main()
 {
     int&& rref = 1;
-    int n = 1;
-    int& lref = n;
+    const int n = 1;
+    const int& lref = n;
+    int a = 10;
+    func(move(a));
     func(n);
     func(0);
     return 0;
