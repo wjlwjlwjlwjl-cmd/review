@@ -53,7 +53,7 @@ public:
         }
 
         cur = new Node(key, val);
-        if(key > parent->val)
+        if(key > parent->key)
         {
             parent->right = cur;
         }
@@ -130,15 +130,18 @@ public:
             _root = subL;
             subL->parent = nullptr;
         }
-        else if(grandparent->right == parent)
-        {
-            grandparent->right = subL;
-        }
         else
         {
-            grandparent->left = subL;
+            if(grandparent->right == parent)
+            {
+                grandparent->right = subL;
+            }
+            else
+            {
+                grandparent->left = subL;
+            }
+            subL->parent = grandparent;
         }
-        subL->parent = grandparent;
         parent->parent = subL;
         parent->left = subLR;
         subL->right = parent;
@@ -165,15 +168,18 @@ public:
             _root = subR;
             subR->parent = nullptr;
         }
-        else if(grandparent->right == parent)
-        {
-            grandparent->right = subR;
-        }
         else
         {
-            grandparent->left = subR;
+            if(grandparent->right == parent)
+            {
+                grandparent->right = subR;
+            }
+            else
+            {
+                grandparent->left = subR;
+            }
+            subR->parent = grandparent;
         }
-        subR->parent = grandparent;
         parent->right = subRL;
         if(subRL)
         {
@@ -290,7 +296,7 @@ int Height(AVLNode<K, V>* root)
     }
     int lh = Height(root->left);
     int rh = Height(root->right);
-    return lh > rh ? lh : rh;
+    return lh > rh ? lh + 1 : rh + 1;
 }
 
 template<class K, class V>
@@ -325,6 +331,9 @@ int main()
     at.insert(5, 1);
     at.insert(7, 1);
     at.inOrder();
-    Test<int, int>(at.root());
+    if(Test<int, int>(at.root()))
+    {
+        cout << "avl 数没有异常" << endl;
+    }
     return 0;
 }
