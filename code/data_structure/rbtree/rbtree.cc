@@ -5,6 +5,7 @@
 * 推导
 * 插入节点必须是红色节点，否则破坏3
 */
+
 #include <iostream>
 #include <cassert>
 using namespace std;
