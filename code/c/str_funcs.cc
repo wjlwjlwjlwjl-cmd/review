@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include <assert.h>
 
 int strlen(char* str)
@@ -55,7 +56,7 @@ int strcmp(const char* str1, const char* str2)
 }
 
 //the first appearance of str2 in str1
-char* strstr(const char* str1, const char* str2)
+char* mystrstr(const char* str1, const char* str2)
 {
     char* cp = (char*)str1;
     char* s1, *s2;
@@ -97,6 +98,7 @@ int main()
     //std::cout << strcmp(str1, str2) << std::endl;
     //std::cout << ('a' - '\0') << std::endl;
     
-    std::cout << strstr(str1, str2) << std::endl;
+    // std::cout << strstr(str1, str2) << std::endl;
+    std::cout << strtok(str1, str2) << std::endl;
     return 0;
 }
