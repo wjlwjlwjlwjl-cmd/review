@@ -1,6 +1,5 @@
 #include <unistd.h>
 #include <fcntl.h>
-#include <iostream>
 int main()
 {
     close(1);
