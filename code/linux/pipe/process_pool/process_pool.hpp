@@ -1,6 +1,16 @@
 #include "channel.hpp"
 #include <sys/wait.h>
 
+/*
+管道的读写规则
+1. write满时
+O_NONBLOCK，返回-1，errno为EAGAIN；没有设置，
+则阻塞等待
+2. read完时，情况与write满时相同
+3. read还在，但是写端文件描述符被关闭，读端推出
+4. write还在，读端推出，写端可能退出
+5. 写入大小不超过pipe_buf大小，linux保持其原子性，否则不一定
+*/
 class process_pool
 {
 public:  
