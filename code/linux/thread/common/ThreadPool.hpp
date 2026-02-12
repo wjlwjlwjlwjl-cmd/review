@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include "Cond.hpp"
+#include "Logger.hpp"
 #include "Mutex.hpp"
 #include "Thread.hpp"
 
@@ -15,9 +16,8 @@ private:
             _mutex.Lock();
             while(_tasks.empty() && _isrunning)
             {
-                cout << getpid() << "开始等待" << endl;
                 _waitnum++;
-                _wait.Wait(_mutex);
+                _cond.Wait(_mutex);
                 _waitnum--;
             }
             if(_tasks.empty() && !_isrunning)
@@ -25,10 +25,10 @@ private:
                 _mutex.UnLock();
                 break;
             }
-            auto task = _tasks.front();
+            T task = _tasks.front();
             _tasks.pop();
             _mutex.UnLock();
-            cout << getpid() << "get a task:";
+            DEBUG("get task: {}", getpid());
             task();
         }
     }
@@ -39,27 +39,30 @@ public:
         , _waitnum(0)
         , _isrunning(false)
     {
-        // _threads.resize(threadnum);
-        cout << "Thread Pool construct" << endl;
+        DEBUG("ThreadPool construct");
     }
 
     void Init()
     {
         for(int i = 0; i < _threadnum; i++)
         {
-            Thread t(bind(&ThreadPool::HandleFunc, this));           // 
-            _threads.push_back(t);
-            cout << "初始化线程" << t.Name() << endl;
+            Thread th(bind(&ThreadPool::HandleFunc, this));
+            _threads.push_back(th);
+            DEBUG("Init thread {}", th.Name());
         }
     }
 
     void Start()
     {
+        if(_isrunning == true)
+        {
+            return;
+        }
         _isrunning = true;
-        for(auto e: _threads)
+        for(auto& e: _threads)
         {
             e.Start();
-            cout << "启动线程" << e.Name() << endl;
+            DEBUG("Start thread {}", e.Name());
         }
     }
 
@@ -71,7 +74,7 @@ public:
             _tasks.push(task); 
             if(_waitnum > 0)
             {
-                _wait.Notify();
+                _cond.Notify();
             }
         }
         _mutex.UnLock();
@@ -79,20 +82,20 @@ public:
 
     void Stop()
     {
-        _mutex.Lock();
         _isrunning = false;
-        _wait.NotifyAll();
+        _mutex.Lock();
+        _cond.NotifyAll();
         _mutex.UnLock();
-        cout << "清理残余任务，退出中..." << endl;
+        DEBUG("清理残余任务，退出中...");
     }
 
     void Wait()
     {
-        for(auto e: _threads)
+        for(auto& e: _threads)
         {
             e.Join();
+            DEBUG("{} exit", e.Name());
         }
-        cout << "等待完成，退出" << endl;
     }
 private:
     int _waitnum;
@@ -102,5 +105,5 @@ private:
     queue<T> _tasks;
     vector<Thread> _threads;
     Mutex _mutex;
-    Cond _wait;
+    Cond _cond;
 };

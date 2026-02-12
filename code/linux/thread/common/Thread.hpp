@@ -47,9 +47,7 @@ public:
         {
             return;
         }
-        cout << this->_name << "&&&&&&&" << endl;
-        pthread_create(&_pid, NULL, _Start, this);
-        cout << "create thread: " << _pid << endl;
+        pthread_create(&_pid, NULL, _Start, (void*)this);
     }
 
     void Join()
@@ -60,7 +58,7 @@ public:
         }
     }
 
-    string& Name()
+    string Name()
     {
         return _name;
     }
@@ -73,18 +71,13 @@ private:
     static void* _Start(void* arg)
     {
         Thread* pt = static_cast<Thread*>(arg); 
-        cout << pt->_name << endl;
-        int a = 0;
-        int b = 0;
-        int c = 0;
-        pthread_setname_np(pt->_pid, pt->_name.c_str());
+        pthread_setname_np(pthread_self(), pt->_name.c_str());
         pt->_status = T_RUN;
-        pt->_run();
-
         if(pt->_joinable == false)
         {
             pthread_detach(pthread_self());
         }
+        pt->_run();
         return nullptr;
     }
 private:

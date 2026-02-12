@@ -4,33 +4,35 @@ using task_t = function<void()>;
 
 void task1()
 {
-    cout << "task 1" << endl;
+    cout << "task 1 done" << endl;
 }
 
 void task2()
 {
-    cout << "task 2" << endl;
+    cout << "task 2 done" << endl;
 }
 void task3()
 {
-    cout << "task 3" << endl;
+    cout << "task 3 done" << endl;
 }
 void task4()
 {
-    cout << "task 4" << endl;
+    cout << "task 4 done" << endl;
 }
 void task5()
 {
-    cout << "task 5" << endl;
+    cout << "task 5 done" << endl;
 }
 void task6()
 {
-    cout << "task 6" << endl;
+    cout << "task 6 done" << endl;
 }
 
 
 int main()
 {
+    init_logger();
+
     ThreadPool<task_t> tp(3);
     tp.Init();
     tp.Start();
