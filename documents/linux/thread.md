@@ -131,3 +131,23 @@ while(!cond)
 }
 pthread_mutex_unlock(&mutex);
 ```
+# POSIX信号量
+## 对信号量的两种操作
+1. P操作，即让信号量--
+2. V操作，即让信号量++
+3. 理解：信号量其实就是为执行流规定了几张门票，有门票的操作，没有的阻塞等待。所以POSIX信号量可以用于线程间的同步
+## POSIX信号量的操作
+### 初始化
+```cpp
+int sem_init(sem_t* sem, int pshare, unsigned int value);
+```
+sem_t是信号量的类型，pshare表示用于处理进程间同步（非0）还是线程间同步（0），value是将信号量初始化的值
+### PV操作
+```cpp
+int sem_wait(sem_t* sem);
+int sem_post(sem_t* sem);
+```
+### 销毁
+```cpp
+int sem_destroy(set_t* sem);
+```
