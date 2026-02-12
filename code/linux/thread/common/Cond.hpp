@@ -11,9 +11,9 @@ public:
         pthread_cond_init(&_cond, nullptr);
     }
 
-    void Wait()
+    void Wait(Mutex& mutex)
     {
-        pthread_cond_wait(&_cond, _mutex.GetOriginal());
+        pthread_cond_wait(&_cond, mutex.GetOriginal());
     }
 
     void Notify()
@@ -32,5 +32,4 @@ public:
     }
 private:
     pthread_cond_t _cond;
-    Mutex _mutex;
 };
