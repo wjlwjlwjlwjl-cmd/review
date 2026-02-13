@@ -11,7 +11,7 @@ std::shared_ptr<spdlog::logger> g_default_logger;
 
 void init_logger()
 {
-    g_default_logger = spdlog::stdout_color_mt<spdlog::async_factory>("g_default_logger");  
+    g_default_logger = spdlog::stdout_color_mt("g_default_logger");  
     g_default_logger->set_level(spdlog::level::level_enum::trace);
     g_default_logger->flush_on(spdlog::level::level_enum::trace);
     g_default_logger->set_pattern("[%n][%H:%M:%S][%t][%-8l] %v");

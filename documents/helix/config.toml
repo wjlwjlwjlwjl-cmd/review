@@ -2,6 +2,9 @@ theme = "onedark_transparent"
 [keys.insert]
 f = {d = "normal_mode"}
 
+[editor]
+color-modes=true
+
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
@@ -10,3 +13,4 @@ normal = "block"
 center = ["file-type"]
 mode.normal = "NORMAL"
 mode.insert = "INSERT"
+mode.select = "SELECT"
