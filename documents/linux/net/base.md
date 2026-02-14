@@ -74,6 +74,7 @@ int socket(int domain, int type, int protocol);
 ```cpp
 int bind(int sockfd, const sockaddr* addr, socklen_t len);
 ```
+### udp
 将sockfd设置进内核。（网络层和传输层都是在操作系统这一级别中）
 ```cpp
 ssize_t recvfrom(int socket, char* buffer, ssize_t size, int flag, const sockaddr* src_addr, socklen_t* len);
@@ -81,3 +82,17 @@ ssize_t sendto(int socket, char* buffer, ssize_t size,  int flag, const sockaddr
 ```
 两个函数负责发送与接收。recvfrom将socket标记的进程所接收到的信息存进buffer，如果最后两个参数不设置为空，
 那么就作为输出型参数带出发送方的信息；sendto是根据des_addr所提供的信息，将buffer中的信息发送过去
+### tcp
+```cpp
+int listen(int sockfd, int backlog);
+```
+监听sockfd，最多可以有backlog个线程
+```cpp
+int accept(int sockfd, sockaddr* addr, socklen_t* len);
+```
+从操作系统中获取链接。前面我们就说过，linux中一切皆文件，包括我们的网卡，在tcp协议中，我们可以直接
+用read，write通过操作文件的逻辑，完成信息的发送和接受
+```cpp
+int connect(int sockfd, sockaddr* addr, socklen_t len);
+```
+让客户端获取服务器的套接字，直接使用传入的sockfd进行文件逻辑的消息发送接收即可
