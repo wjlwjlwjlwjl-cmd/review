@@ -61,6 +61,12 @@ public:
             memset(&cli_addr, 0, sizeof(cli_addr));
             socklen_t len;
             int client = accept(_socket, CONV(cli_addr), &len);
+            if(client < 0)
+            {
+                DEBUG("ACCEPT ERROR");
+                continue;
+            }
+            std::cout << "accept success" << std::endl;
             if(client > 0)
             {
                 Service(client);
@@ -72,18 +78,29 @@ public:
     void Service(int client)
     {
         char buff[default_buffer_size];
-        int n = read(client, buff, sizeof(buff) - 1);
-        buff[n] = 0;
-        std::string echo = "recv from client## ";
-        echo += buff; 
-        std::cout << buff << std::endl;
-        std::string resp = "server echo$$ ";
-        resp += buff;
-        n = write(client, resp.c_str(), strlen(resp.c_str()));
-        if(n < 0)
+        while(1)
         {
-            ERROR("echo fail");
-            exit(1);
+            int n = read(client, buff, sizeof(buff) - 1);
+            if(n > 0)
+            {
+                buff[n] = 0;
+                std::string echo = "recv from client## ";
+                echo += buff; 
+                std::cout << echo << std::endl;
+                std::string resp = "server echo$$ ";
+                resp += buff;
+                n = write(client, resp.c_str(), strlen(resp.c_str()));
+            }
+            if(n == 0)
+            {
+                DEBUG("client exit");
+                break;
+            }
+            if(n < 0)
+            {
+                ERROR("echo fail");
+                exit(1);
+            }
         }
     }
 private:

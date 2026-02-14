@@ -35,6 +35,7 @@ int main(int argc, char* argv[])
     {
         std::cout << "Please input##";
         std::string buffer;
+        std::cin.clear();
         std::getline(std::cin, buffer);
         int n = write(server_sock, buffer.c_str(), buffer.size());
         if(n > 0)
