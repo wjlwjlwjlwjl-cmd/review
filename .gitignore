@@ -2,5 +2,7 @@
 /Nothing
 # ignore the binary executable file
 a.out
+server
+client
 # ignore the pratice code
 practice.cc
