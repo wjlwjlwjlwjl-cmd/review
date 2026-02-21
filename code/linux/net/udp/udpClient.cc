@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
     struct sockaddr_in addr;
     memset(&addr, 0, sizeof(addr));
-    addr.sin_addr.s_addr = inet_addr(FLAGS_server_ip.c_str());
+    addr.sin_addr.s_addr = inet_addr(FLAGS_server_ip.c_str()); //将字符串的ip地址转化为点分十进制的数字
     addr.sin_port = htons(8080);
     addr.sin_family = AF_INET;
     socklen_t len = sizeof(addr);
