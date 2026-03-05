@@ -10,9 +10,9 @@ void adjustDown(std::vector<int>& v, int parent, int n)
         {
             child += 1;
         }
-        if(v[parent] < v[child])
+        if(v[child] > v[parent])
         {
-            std::swap(v[parent], v[child]);
+            std::swap(v[child], v[parent]);
             parent = child;
             child = parent * 2 + 1;
         }
@@ -41,11 +41,11 @@ void heap_sort(std::vector<int>& v)
 
 int main()
 {
-    std::vector<int> v = {3, 8, 1, 2, 9, 5, 7, 0};
+    std::vector<int> v = {4, 9, 1, 8, 3, 0};
     heap_sort(v);
     for(auto& e: v)
     {
-        std::cout << e << std::endl;
+        std::cout << e << " ";
     }
     return 0;
 }

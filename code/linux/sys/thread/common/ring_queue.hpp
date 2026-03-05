@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 

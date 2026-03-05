@@ -4,7 +4,7 @@
 void shell_sort(std::vector<int>& v)
 {
     int n = v.size();
-    int gap = n;
+    int gap = v.size();
     while(gap > 1)
     {
         gap = gap / 3 + 1;
@@ -16,7 +16,7 @@ void shell_sort(std::vector<int>& v)
             {
                 if(tmp < v[end])
                 {
-                    v[end + gap] = v[end];
+                    std::swap(v[end], v[end + gap]);
                     end -= gap;
                 }
                 else
@@ -31,11 +31,11 @@ void shell_sort(std::vector<int>& v)
 
 int main()
 {
-    std::vector<int> v = {3, 8, 1, 5, 4, 0, 6, 2};
+    std::vector<int> v = {4, 9, 7, 1, 0, 5, 2};
     shell_sort(v);
     for(auto& e: v)
     {
-        std::cout << e << std::endl;
+        std::cout << e << " "; 
     }
     return 0;
 }

@@ -3,18 +3,20 @@
 
 std::vector<int> tmp;
 
-void merge_sort(std::vector<int>& v, int begin, int end)
+void merge_sort(std::vector<int>& v, int begin,  int end)
 {
     if(begin >= end)
     {
         return;
     }
+
     int midi = (begin + end) / 2;
     merge_sort(v, begin, midi);
     merge_sort(v, midi + 1, end);
-    tmp.resize(end - begin + 1);
 
-    int left = begin, right = midi + 1;
+    int left = begin;
+    int right = midi + 1;
+    tmp.resize(end - begin + 1);
     int i = 0;
     while(left <= midi && right <= end)
     {
@@ -30,17 +32,17 @@ void merge_sort(std::vector<int>& v, int begin, int end)
     }
     for(int i = 0; i < tmp.size(); i++)
     {
-        v[begin + i] = tmp[i];
+        v[i + begin] = tmp[i];
     }
 }
 
 int main()
 {
-    std::vector<int> v = {4, 9, 2, 0, 6, 7, 1, 8};
-    merge_sort(v, 0,  v.size() - 1);
+    std::vector<int> v = {3, 9, 8, 5, 1, 0, 2, 7};
+    merge_sort(v, 0, v.size() - 1);
     for(auto& e: v)
     {
-        std::cout << e << std::endl;
+        std::cout << e << " "; 
     }
     return 0;
 }

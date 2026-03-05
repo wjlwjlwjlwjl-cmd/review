@@ -1,28 +1,6 @@
 #include <iostream>
 #include <vector>
 
-void insert_sort(std::vector<int>& v)
-{
-    for(int i = 0; i < v.size() - 1; i++)
-    {
-        int end = i;
-        int tmp = v[i + 1];
-        while(end >= 0)
-        {
-            if(tmp < v[end])
-            {
-                std::swap(v[end], v[end + 1]);
-                end--;
-            }
-            else
-            {
-                break;
-            }
-        }
-        v[end + 1] = tmp;
-    }
-}
-
 void quick_sort(std::vector<int>& v, int begin, int end)
 {
     if(begin >= end)
@@ -41,7 +19,7 @@ void quick_sort(std::vector<int>& v, int begin, int end)
         {
             left++;
         }
-        std::swap(v[right], v[left]);
+        std::swap(v[left], v[right]);
     }
     std::swap(v[key], v[left]);
     key = left;
@@ -51,11 +29,12 @@ void quick_sort(std::vector<int>& v, int begin, int end)
 
 int main()
 {
-    std::vector<int> v = {4, 2, 8, 0, 5, 1, 6};
-    insert_sort(v);
-    for(auto e: v)
+    std::vector<int> v = {3, 9, 4, 1, 0, 6 ,5, 8};
+    quick_sort(v, 0, v.size() - 1);
+
+    for(auto& e: v)
     {
-        std::cout << e << std::endl;
+        std::cout << e << " ";
     }
     return 0;
 }
