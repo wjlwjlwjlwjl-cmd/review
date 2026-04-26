@@ -1,4 +1,4 @@
-theme = "onedark_transparent"
+theme = "dark_plus_transparent"
 [keys.insert]
 f = {d = "normal_mode"}
 

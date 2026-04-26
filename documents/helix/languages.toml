@@ -5,3 +5,12 @@ indent={tab-width=4, unit = "    "}
 [[language]]
 name="cpp"
 indent={tab-width=4, unit = "    "}
+
+[[language]]
+name = "python"
+scope = "source.python"
+language-servers = ["pyright"]
+
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
