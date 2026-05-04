@@ -10,7 +10,10 @@ indent={tab-width=4, unit = "    "}
 name = "python"
 scope = "source.python"
 language-servers = ["pyright"]
+indent={tab-width=4, unit = "    "}
 
-[language-server.pyright]
-command = "pyright-langserver"
-args = ["--stdio"]
+[[language]]
+name = "java"
+scope = "java"
+language-servers = ["jdtls"]
+indent={tab-width=4, unit = "    "}
