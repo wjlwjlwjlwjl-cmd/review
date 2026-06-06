@@ -1,9 +1,11 @@
-theme = "dark_plus_transparent"
+theme = "base16_transparent"
 [keys.insert]
 f = {d = "normal_mode"}
 
 [editor]
 color-modes=true
+mouse=false
+soft-wrap.enable=true
 
 [editor.cursor-shape]
 insert = "bar"
