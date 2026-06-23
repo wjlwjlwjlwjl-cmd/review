@@ -47,3 +47,13 @@
     > `super()` 调用父类的构造，显式调用的话必须放在构造方法第一行，如果不显式调用则默认隐式调用；和 this 一样，不能在静态方法中使用，this是因为静态方法、属性属于这个类而不是某个类实例，super 也是因为静态方法属于类，不属于某个对象，super 无法找到相应的父类实例
 
 * 关于访问限定符：Java 的访问限定符，是在访问位置（where）上对访问做出限定，不要理解成那种类型的对象可以访问（who或者what）
+
+* 关于 String
+    
+    * String 本身不存储字符串，类似与 C++ 的 string_view，存放的是在常量池中存储的字符串的地址，即 String 是引用类型。
+
+    * `String str = "abc" + "def";`，在编译时，会被直接编译为 `String str = "abcdef";`
+
+    * 当String 对象调用 `+=` 时，会创建新的 StringBuilder 对象，然后调用 `append`，随后返回 `toString()`，得到新的 String 对象。总的来说，频繁调用 String 的 `+=` 接口，效率低下，会频繁创建 StiringBuilder，废弃的 String 对象和老旧的字符数组交给 GC 处理
+
+    * 拼接字符串，可以使用 StringBuilder 的 append 接口，内部存放的数组是可变的（String 中的是 final 修饰的），因此不需要频繁开辟新数组、回收旧数组
