@@ -57,3 +57,15 @@
     * 当String 对象调用 `+=` 时，会创建新的 StringBuilder 对象，然后调用 `append`，随后返回 `toString()`，得到新的 String 对象。总的来说，频繁调用 String 的 `+=` 接口，效率低下，会频繁创建 StiringBuilder，废弃的 String 对象和老旧的字符数组交给 GC 处理
 
     * 拼接字符串，可以使用 StringBuilder 的 append 接口，内部存放的数组是可变的（String 中的是 final 修饰的），因此不需要频繁开辟新数组、回收旧数组
+
+* 关于 Java 的异常体系
+    
+    * Java 的异常体系分为两类，即继承了 Throwable 的 Error 和 Exception，其中 Exception 又被 RuntimeException 和 IOException 所继承
+
+    * 运行时异常，如数组越界、空指针访问，对于是否捕获没有要求；受检异常，比如 IOException，必须捕获，可以通过 try-catch 在自己的方法体中处理，也可以往上传，在方法声明中使用 throws 关键字，交给调用方捕获处理
+
+    * Error，大多是与 JVM 虚拟机相关的严重错误，不需要也不建议捕获
+
+    * 一个 try-catch 结构中，可以有多个 catch 语句，但是只会执行其中一个
+
+    * 在异常处理中，关闭数据库、释放资源、关闭文件应该在 finally 中执行
