@@ -1,7 +1,0 @@
-inherits="onedark"
-"ui.background" = {}
-"ui.popup" = {}
-"ui.menu" = {}
-
-"ui.statusline.normal" = {fg = "#21252b", bg = "#61afef"}
-"ui.statusline.insert" = {fg = "#21252b", bg = "#98c379"}
