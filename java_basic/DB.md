@@ -66,7 +66,9 @@ having 和 where 一样都是条件过滤，但是作用对象不同，where 是
 
 为了避免部分函数依赖、传递依赖，对设计出的单个表执行 SQL 可能会检索不全，所以我们经常使用联合查询。
 
-联合查询首先进行的是笛卡尔积，即把 select 指定的每一个表的每一项一一组合，后通过 where 子句（有的话）对所有组合结果过滤
+### 8.1 内连接
+
+联合查询首先进行的是笛卡尔积，即把 from 指定的每一个表的每一项一一组合，后通过 where 子句（有的话）对所有组合结果过滤
 
 联合查询步骤可以分为五步
 
@@ -74,7 +76,41 @@ having 和 where 一样都是条件过滤，但是作用对象不同，where 是
 2. 做笛卡尔积 
 3. 明确连接条件
 4. 明确结果筛选条件 
-5. 精简最终结果
+5. 精简查询字段
+
+```mysql
+select content from table1, table2... where connect_condition [where condition];
+select content from table1 join table2 on connect_condition [where conditoin];
+```
+
+### 8.2 外连接
+
+外连接和内连接的步骤、语法格式大致相同，分为左外连接和右外连接。语法格式为：
+
+```mysql
+select content from table1 left join table2 on connect_condition [where condition];
+select content from table1 right join table2 on connect_condition [where condition];
+```
+
+外连接可以让我们快速查看到两个表中哪些数据在另一个表中没有对应的数据。right join 以右侧表为基准，如果左侧表没有对应内容，就在返回结果时用 null 补全；left join 相反，右侧表没有对应的就用 null 补全显示
+
+### 8.3 自连接
+
+自连接目的是支持表自己和自己比较，语法格式和内连接一样，不过表是一张表，同时通过别名来区分表
+
+## 9. 视图
+
+视图是用来隐藏字段、区分权限而基于 select 操作的其他表创建的“拼接”出来的表，语法结构为
+
+```mysql
+create view view_name [(columns)] as (select* from table1, table2);  
+```
+
+视图具有简单性（将复杂的查询封装为一个简单的查询）、安全性（过滤掉敏感字段或增加权限）、逻辑数据独立性、重命名列。理论上视图的修改也会影响原表，反过来亦然，但是视图建立在聚合查询、自查询等非直接对应数据的情况除外
+
+> mysql 中不支持全外连接
+
+---
 
 > 关于各大关键字的执行顺序
 > 
