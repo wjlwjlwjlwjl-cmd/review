@@ -59,3 +59,39 @@
     * 从功能上来说，`BeanFactory` 提供了基础的访问容器的能力，`ApplicationContext` 具有 `BeanFacotry` 的所有功能，同时又添加了比如国际化、事务传播支持、资源访问支持等
 
     * 从性能上来说，`ApplicationContext` 一次性加载并实例化所有 bean，而 `BeanFactory` 在启动时不实例化任何 bean，而是只加载相应的类的定义信息，用到时再实例化 bean
+
+  * 三种注入方式（思想）及对比
+
+    * 属性注入，直接在属性处使用 `@Autowired` 注解，优点是简洁，缺点：因为 `@Autowired` 是 spring 处理实现的，所以如果不搭配 IoC 容器使用，就等价于没有进行任何处理，相应属性始终未初始化；不能为 final 属性进行初始化；只有在使用时才会报 NullPointerException
+
+    * 构造方法注入，在构造方法处加上 `@Autowired`，优点是支持对 final 属性初始化，同时不需要搭配 IoC 容器使用，构造函数是 JVM 自身支持的语法，依赖对象在使用以前就全部完成了初始化，缺点：依赖对象较多时代码会较为繁琐
+
+    * setter 注入，在 setter 函数上加上 `@Autowired`，优点是能够在类实例化之后，对属性进行注入修改；缺点也在这里，不能注入final属性，不能保证注入对象不被修改
+
+11. Bean 注解
+
+  * 类注解：
+
+    1. `@Controller`，控制器存储，负责接收请求并进行相应
+
+    2. `@Service`，服务器存储，进行对请求的实际业务处理
+
+    3. `@Repository`，仓库存储，与数据库进行交互，即持久化层
+
+    4. `@Component`，组件存储，是元注解，其他注解都是 `@Component` 的“子类”
+
+    5. `@Configuration`，配置存储，包含项目中的配置信息
+
+  * 方法注解 `@Bean`，作用于方法上，表示该方法返回的对象交给 Spring 容器管理，在不方便给类加注解，比如使用第三方库的类时使用；`@Bean(name{"newName", "oldName"})` 可以给类重命名后交给 Spring 管理
+
+12. `@Autowired` 使用时问题  
+
+  * 当一个类存在多个 bean 时，会出现 spring 不知道返回哪个对象的问题，因为 `@Autowired` 是通过类型识别对象的
+
+  * 解决方法：
+
+    * `@Primary`，指定默认使用的 bean
+
+    * `@Qualifier("beanName")`，通过名称区分 bean
+
+    * `@Resource`，通过 bean 的名称区分，不同的是，这是 JDK 提供的注解，不需要像 `@Qualifier` 一样与 `@Autowired` 搭配使用 
