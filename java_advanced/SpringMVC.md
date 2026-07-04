@@ -15,3 +15,47 @@
   * 通过 `HttpServletResponse` 的 `getCookies` 获得一个 `Cookie` 数组，其中包含了 Cookie 键值对
 
   * 通过 `@CookieValue("cookieName")` 注解获取，这种方式获取的是部分cookie字段，上面的方法是获取全部的
+
+7. 获取 Session
+
+  * 在 Spring 中，Session 对象是通过 `HttpSession` 来描述的，通过获取请求中的 `SessionId` 来创建或查询 Session，设置、获取属性的方法为 `setAttribute`、`getAttribute`
+
+  * 获取 Session 主要有三种方法
+
+    1. 直接通过 `HttpServletRequest.getSession()` 获取，如果传 false 的话，代表只查询不创建
+
+    2. 通过 `@SessionAttribute("attr-name")` 获取，同时可以通过 `value=xxx, required=xxx` 的方式制定获取字段和是否创建
+
+    3. Spring MVC 内置了 `HttpSession` 对象，可以直接通过其进行创建式的获取
+
+8. 获取 Header
+
+  * Header字段包括各种 HTTP 报头中的请求信息，比如 `User-Agent`、`Cookie`、`Host` 等
+
+  * 获取方式主要两种，一种是通过 `HttpServletRequest.getHeader("name")`，另一种是通过 `@RequestHeader("name")`
+
+9. 设置响应
+
+  * 在 MVC 架构中，Controller 在接受到浏览器的请求后，选择合适的模型处理请求，并接受处理结果，随后挑选合适的视图返回。不过在前后端分离的情况下，返回的视图也有可能是构建视图所需的数据
+
+  * 使用 `@Controller` 注解表示将这个类交给 Spring 作为 Controller 管理，这时默认返回的内容作为视图处理，即会到相应目录寻找所制定的页面，如果没有就会自动返回 404
+
+  * 使用 `@ResponseBody` 表示将返回结果作为非视图内容处理，`Content-Type` 会进行自动识别设置
+
+  * `@ResponseBody` 既是方法注解，又是类注解；`@RespController` 等价于 `@Controller` + `@ResponseBody`，表示当前类是 Controller，同时返回的所有内容都是非视图
+
+10. IoC & DI
+
+  * `IoC` 指的是 `Inversion of Control`，即控制反转，将对象的创建、管理交给第三方处理。在 Spring 这里，就是交给 Spring 管理，需要时，只需要到 Spring 管理的对象中去取即可，所以 Spring 也被叫做 Spring 容器。IoC 降低了使用资源时的耦合度，也方便集中进行资源管理
+
+  * `DI` 指的是依赖注入，`IoC` 更多的指的是一种资源管理思想，而我们的 `DI` 是这种思想的实现方式之一
+
+  * bean 指的是交给 Spring 创建并管理的对象，从 Spring 容器中获取这些对象就是 `getBean`，常用的有三种方法：通过 bean 名称、通过 bean 类型、通过 bean 名称 + 类型
+
+  * `ApplicationContext` 和 `BeanFactory` 的关系
+
+    * 从继承关系来说，`ApplicationContext` 是 `BeanFactory` 的子类
+
+    * 从功能上来说，`BeanFactory` 提供了基础的访问容器的能力，`ApplicationContext` 具有 `BeanFacotry` 的所有功能，同时又添加了比如国际化、事务传播支持、资源访问支持等
+
+    * 从性能上来说，`ApplicationContext` 一次性加载并实例化所有 bean，而 `BeanFactory` 在启动时不实例化任何 bean，而是只加载相应的类的定义信息，用到时再实例化 bean
