@@ -42,7 +42,7 @@
 
   * 使用 `@ResponseBody` 表示将返回结果作为非视图内容处理，`Content-Type` 会进行自动识别设置
 
-  * `@ResponseBody` 既是方法注解，又是类注解；`@RespController` 等价于 `@Controller` + `@ResponseBody`，表示当前类是 Controller，同时返回的所有内容都是非视图
+  * `@ResponseBody` 既是方法注解，又是类注解；`@RestController` 等价于 `@Controller` + `@ResponseBody`，表示当前类是 Controller，同时返回的所有内容都是非视图
 
 10. IoC & DI
 
