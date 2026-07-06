@@ -153,3 +153,26 @@
       * `*`，匹配任意一个实体，比如包名、类名、方法名、参数等
 
       * `..`，表示匹配任意多个任意类型
+
+    * `@annotation`，允许我们通过自定义注解的方式精确指定某一个连接点，步骤如下：
+
+      * 将一个类使用 `@Target`、`@Retention` 注解修饰，指定作用对象、生命周期后，即定义了 `@类名` 的自定义注解，在 Spring AOP 中，常使用 `ElementType.METHOD`、`RetentionPolicy.RUNTIME` 的配置，即作用对象是方法、生命周期到运行时的方式配置自定义注解
+
+      * 定义切面类，在切面类中通过 `@Around`、`@Before` 等注解定义通知方法，并通过 `"@annotation(全限定类名+方法名)"` 的方式指定注解对应的类
+
+      * 使用时，直接在 controller 的对应方法中使用自定义注解修饰即可 
+  * Spring AOP 实现方式
+        
+    * 基于 `@Aspect` 注解
+
+    * 通过自定义注解
+
+    * 通过 Spring API 与 xml 配置结合
+
+    * 通过代理实现
+
+  * Spring AOP 原理
+
+    * Spring 首先找到所有 `@Aspect` 注解，并生成对应的通知对象，最后在合适的时候调用通知方法。Spring AOP 通过动态映射的方式实现，可以通过 jdk，也可以通过 CGLib
+
+      jdk 只能映射接口，CGLib 既可以映射接口，也可以映射类；SpringFrameWork 中代理工厂中的 proxyTargetClass 默认为 false，未实现接口时通过jdk，实现了接口时通过 CGLib，SpringBoot从 2.X 开始默认使用 CGLib
