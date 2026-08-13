@@ -6,3 +6,5 @@ server
 client
 # ignore the pratice code
 practice.cc
+
+target/
