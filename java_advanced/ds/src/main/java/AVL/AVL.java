@@ -1,3 +1,5 @@
+package AVL;
+
 import java.util.*;
 
 public class AVL {
@@ -92,7 +94,7 @@ class AVLTree {
                     else
                         rotateRL(parent, cur);
                 }
-                break;
+                break; //当平衡因子为2被旋转后，现在的子树跟的平衡因子变为1，不需要继续向上更新
             }
         }
 
