@@ -1,0 +1,13 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: cloud-eureka-server
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    fetch-registry: false # 从其他 Eureka 节点拉取注册信息，默认拉取，但是单点不需要
+    register-with-eureka: false # 将自己注册到 Eureka 注册中心，当前微服务是 Eureka Server，不需要注册
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
