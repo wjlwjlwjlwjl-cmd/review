@@ -4,7 +4,7 @@ spring:
   application:
     name: cloud-product
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/cloud_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+    url: jdbc:mysql://192.168.191.128:3306/cloud_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8
     username: root
     password: 123
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,4 +15,4 @@ mybatis:
 eureka:
   client:
     service-url:
-      defaultZone: http://127.0.0.1:8082/eureka/
+      defaultZone: http://192.168.191.128:10010/eureka/

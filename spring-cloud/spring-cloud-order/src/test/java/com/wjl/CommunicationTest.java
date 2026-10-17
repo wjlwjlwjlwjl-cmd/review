@@ -18,9 +18,13 @@ public class CommunicationTest {
     @Test
     public void test(){
         //调用 cloud-product
-        org.springframework.cloud.client.ServiceInstance instance = discoveryClient.getInstances("cloud-product").get(0);
-        String uri = instance.getUri().toString() + "/product/get_product_name?id=1";
-        System.out.println(uri);
+        String uri = "http://cloud-product/product/get_product_name?id=1";
+        System.out.println(restTemplate.getForObject(uri,String.class));
+        System.out.println(restTemplate.getForObject(uri,String.class));
+        System.out.println(restTemplate.getForObject(uri,String.class));
+        System.out.println(restTemplate.getForObject(uri,String.class));
+        System.out.println(restTemplate.getForObject(uri,String.class));
+        System.out.println(restTemplate.getForObject(uri,String.class));
         System.out.println(restTemplate.getForObject(uri,String.class));
     }
 }
